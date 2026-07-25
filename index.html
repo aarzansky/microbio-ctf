@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Capture the Flag</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <img src="./frontend/assets/logo-dm.svg" alt="COGNITO DAVITCLUB" />
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="./frontend/auth/register.html">Register</a></li>
+          <li><a href="./frontend/auth/login.html">Login</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <h1>Welcome to "Capture the Flag!"</h1>
+      <section>
+        <h2>
+          Organized by: <br />
+          Cognito DAV IT Club
+        </h2>
+        <h2>
+          Supported by: <br />
+          D.A.V. College
+        </h2>
+      </section>
+    </main>
+    <footer>&copy; Cognito DAVITCLUB 2024</footer>
+  </body>
+  <!-- <script src="https://cdn.socket.io/socket.io-3.0.0.js"></script> -->
+  <script src="app.js"></script>
+  <script>
+    // client-side build config (leftover from deployment)
+    window.__env__ = {
+      NODE_ENV: "production",
+      BUILD: "2026.07.24",
+      DEBUG_FLAG: "flag{env_variable}"
+    };
+    // demo session token issued on page load
+    document.cookie = "session_token=ZmxhZ3tzZXNzaW9uX2hpamFja30=; path=/";
+  </script>
+</html>

@@ -1,0 +1,76 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+:root {
+  --background: #2b2d42;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+  font-size: 18px;
+}
+
+header {
+  display: flex;
+  height: 15vh;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  background-color: var(--background);
+  padding: 20px 50px;
+}
+
+ul {
+  display: flex;
+  text-decoration: none;
+  color: black;
+  gap: 20px;
+}
+
+li {
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+  font-size: 24px;
+}
+
+img {
+  width: 100px;
+}
+
+main {
+  height: 75.8vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+}
+
+section {
+  display: flex;
+  justify-content: space-between;
+  width: 700px;
+}
+
+footer {
+  width: 100%;
+  background-color: var(--background);
+  height: 5vh;
+  display: grid;
+  place-content: center;
+  color: white;
+  margin-top: 40px;
+}
+
+h1 {
+  font-size: 64px;
+}
+
+h2 {
+  font-size: 28px;
+}

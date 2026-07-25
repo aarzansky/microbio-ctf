@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+       <header>
+  <img src="../assets/logo-dm.svg" alt="COGNITO DAVITCLUB" />
+  <nav>
+    <ul>
+      <li><a href="dashboard.html">Challenges</a></li>
+      <li><a href="scoreboard.html">Scoreboard</a></li>
+      <li><a id="logout" href="#">Logout</a></li>
+    </ul>
+  </nav>
+</header>
+
+    <section class="section-challenge">
+      <p id="user_id">Username:</p>
+      <p id="user_score">User Score:</p>
+    </section>
+ 
+
+    <section class="section-challenge-one">
+      <h2>Miscellaneous</h2>
+      <div class="box">
+        <div class="challenge" id="question-1">Test</div>
+        <div class="challenge" id="question-2">Test</div>
+        <div class="challenge" id="question-3">Test</div>
+        <div class="challenge" id="question-4">Test</div>
+        <div class="challenge" id="question-5">Test</div>
+      </div>
+    </section>
+    <section class="section-challenge-two">
+      <h2>Course</h2>
+      <div class="box">
+        <div class="challenge" id="question-6">Test</div>
+        <div class="challenge" id="question-7">Test</div>
+        <div class="challenge" id="question-8">Test</div>
+        <div class="challenge" id="question-9">Test</div>
+        <div class="challenge" id="question-10">Test</div>
+      </div>
+    </section>
+    <section class="section-challenge-three">
+      <h2>Cryptography</h2>
+      <div class="box">
+        <div class="challenge" id="question-11">Test</div>
+        <div class="challenge" id="question-12">Test</div>
+        <div class="challenge" id="question-13">Test</div>
+        <div class="challenge" id="question-14">Test</div>
+        <div class="challenge" id="question-15">Test</div>
+      </div>
+    </section>
+    <section class="section-challenge-four">
+      <h2>Riddles?</h2>
+      <div class="box">
+        <div class="challenge" id="question-16">Test</div>
+        <div class="challenge" id="question-17">Test</div>
+        <div class="challenge" id="question-18">Test</div>
+        <div class="challenge" id="question-19">Test</div>
+        <div class="challenge" id="question-20">Test</div>
+      </div>
+    </section>
+    <section class="section-challenge-five">
+      <h2>Utility</h2>
+      <div class="box">
+        <div class="challenge" id="question-21">Test</div>
+        <div class="challenge" id="question-22">Test</div>
+        <div class="challenge" id="question-23">Test</div>
+        <div class="challenge" id="question-24">Test</div>
+        <a href="../file.txt"><div class="challenge" id="question-25">Test</div></a>
+        <div class="challenge" id="question-26">Test</div>
+      </div>
+    </section>
+    <section class="section-challenge-six">
+      <h2>MAT</h2>
+      <div class="box">
+        <div class="challenge" id="question-27">Test</div>
+        <div class="challenge" id="question-28">Test</div>
+        <div class="challenge" id="question-29">Test</div>
+        <div class="challenge" id="question-30">Test</div>
+        <div class="challenge" id="question-31">Test</div>
+      </div>
+    </section>
+
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <div>
+<span class="close">&times;</span>
+        </div>
+        
+
+        <div>
+          <span
+            class="modal-page"
+            style="cursor: pointer"
+            onclick="switchPage(event, 1)"
+            >Question</span
+          >
+          <span
+            class="modal-page"
+            style="cursor: pointer"
+            onclick="switchPage(event, 2)"
+            >Solved By</span
+          >
+        </div>
+        <div id="page1Content">
+          <h3 id="modal-title"></h2>
+          <img id="modal-image" src="" alt="Challenge image" style="display: none" />
+          <p id="modal-description"></p>
+          <p id="modal-category"></p>
+          <p id="modal-points"></p>
+          <form id="answer-form">
+       
+            <input type="text" id="answer" name="answer" placeholder="Your answer" required />
+            <button type="submit">Submit</button>
+          </form>
+        </div>
+        <div id="page2Content" style="display: none">
+          <div>
+            <h3>Solved by:</h2>
+            <div id="solved-by-container"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>&copy; Cognito DAVITCLUB</footer>
+  </body>
+  <script src="dashboard.js"></script>
+</html>
