@@ -10,4 +10,10 @@ CREATE TABLE score (
     user_score JSON
 );
 
+--// added table for user_attempts 
+Field	    `Type`	`Null`	`Key`	`Default`
+user_id	    int(11)	NO	    PRI	
+question_id	int(11)	NO	    PRI	
+attempts	int(11)	NO		            0
+
 INSERT INTO score (username, user_score) VALUES ('user3', JSON_ARRAY());

@@ -1,15 +1,11 @@
 // fetch attempts
 var ip = window.location.hostname;
-var secret_tok = "don'tstealme";
-localStorage.setItem("USER_VICTIM", secret_tok);
 
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     // Check if the data is already stored in localStorage
     const userId = localStorage.getItem("uid");
-    if(localStorage.getItem(userId) === secret_tok ) {
-      console.log("flag{samasya_samadhana}");
-    }
+
     if (!localStorage.getItem(userId)) {
       
       fetch("json/attempts.json")
@@ -31,7 +27,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   try {
     const token = localStorage.getItem("aT");
 
-    const response = await fetch(`http://${ip}:8888/dashboard`, {
+    const response = await fetch(`http://${ip}:8888/dashboard/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -46,11 +42,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         const challengeDiv = document.getElementById(
           `question-${question.question_id}`
         );
+          let questionDiv = document.getElementById(
+              `question-${question.question_id}`
+          );
+          if(questionDiv){
+              questionDiv.innerText = question.question_title;
+          }
         if (challengeDiv) {
           challengeDiv.addEventListener("click", () => {
             populateModal(question);
             showModal();
-            resetForm(question.question_id);
+             resetForm(question.question_id);
             displaySolvedBy(question.solved_by); // New line to display users who solved the question
           });
         }
@@ -69,7 +71,7 @@ function displaySolvedBy(users) {
   const solvedByContainer = document.getElementById("solved-by-container");
   solvedByContainer.innerHTML = ""; // Clear previous content
 
-  const usersList = users.split(",").map((user) => user.trim());
+    const usersList = users.split(",").map((user) => user.trim());
   for (const user of usersList) {
     const userElement = document.createElement("li");
     userElement.textContent = "~  " + user;
@@ -98,30 +100,44 @@ document.addEventListener("DOMContentLoaded", async () => {
       body: JSON.stringify({ uid }),
     });
 
-    if (response.status === 200) {
-      const data = await response.json();
-      // console.log(data);
+      if (response.status === 200) {
+          const data = await response.json();
 
-      const userName = document.getElementById("user_id");
-      const userScore = document.getElementById("user_score");
+          if (!data.length) {
+              console.error("No user data returned.");
+              return;
+          }
 
-      userName.innerText += " " + data[0].user_name;
-      userScore.innerText += " " + data[0].user_score;
+          const user = data[0];
 
-      // Get all solved question IDs
-      const solvedQuestionIds = data.map((entry) => entry.question_id);
+          const userName = document.getElementById("user_id");
+          const userScore = document.getElementById("user_score");
 
-      // Loop through divs with question IDs and color them green if solved
-      const challengeDivs = document.querySelectorAll(".challenge");
-      challengeDivs.forEach((div) => {
-        const questionId = parseInt(div.id.split("-")[1]);
-        if (solvedQuestionIds.includes(questionId)) {
-          div.style.backgroundColor = "#32de84";
-        }
-      });
-    } else {
-      console.error("Error:", response.statusText);
-    }
+          userName.innerText += " " + user.user_name;
+          userScore.innerText += " " + (user.user_score ?? 0);
+
+          const solvedQuestionIds = user.solved_question_ids
+                ? user.solved_question_ids.split(",").map(Number)
+                : [];
+
+          const failedQuestionIds = user.failed_question_ids
+                ? user.failed_question_ids.split(",").map(Number)
+                : [];
+
+          const challengeDivs = document.querySelectorAll(".challenge");
+
+          challengeDivs.forEach((div) => {
+              const questionId = Number(div.id.split("-")[1]);
+
+              if (solvedQuestionIds.includes(questionId)) {
+                  div.style.backgroundColor = "#32de84"; 
+              } else if (failedQuestionIds.includes(questionId)) {
+                  div.style.backgroundColor = "#808080";
+              }
+          });
+      } else {
+          console.error("Error:", response.statusText);
+      }
   } catch (error) {
     console.error("Error:", error);
   }
@@ -130,7 +146,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 // populate divs with questions
 function populateModal(question) {
   document.getElementById("modal-title").innerText = question.question_title;
-
+    
   const modalImage = document.getElementById("modal-image");
   if (question.question_image) {
     modalImage.src = question.question_image;
@@ -220,14 +236,13 @@ document
         const userScore = document.getElementById("user_score");
         userScore.innerText = "User Score: " + result.userScore;
       } else {
-        const error = await response.json();
-        alert(error.message);
-
-        if (error.message === "Wrong Answer") {
-          // Attempts are no longer tracked/limited client-side, so a wrong
-          // answer just shows the alert above and lets the user try again.
-        }
-        // console.log(error.message);
+          const reply = await response.json();
+          console.log(reply);
+          let message = reply.message + " " + reply.attempts + " attempted";
+          alert(message);
+          if(reply.message !== "Wrong Answer"){ // we have to do something like if (reply.refresh) window.location.href = "dashboard.html";
+              window.location.href = "dashboard.html";
+          }
       }
     } catch (error) {
       console.error("Error:", error);
