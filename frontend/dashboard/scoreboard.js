@@ -38,8 +38,9 @@ fetch("header.html")
         rankCell.textContent = index + 1;
         usernameCell.textContent = item.user_name;
         scoreCell.textContent = item.user_score;
-        completionTimeCell.textContent = item.completion_time
-          ? new Date(item.completion_time).toLocaleString()
+        const completedAt = item.completed_at || item.completion_time;
+        completionTimeCell.textContent = completedAt
+          ? new Date(completedAt).toLocaleString()
           : "-";
       });
     } else {

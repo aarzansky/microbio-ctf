@@ -76,7 +76,7 @@ const checkAnswer = (req, res) => {
 
       const attempts = attemptResults.length > 0 ? attemptResults[0].attempts : 0;
 
-      if (attempts > 3) {
+      if (attempts >= 3) {
         return res.status(401).json({
             message: "Cannot attempt for more than 3 times",
             
@@ -239,10 +239,11 @@ const scoreboard = (req, res) => {
       u.user_name,
       u.user_score,
       CASE
-        WHEN COALESCE(completion.total_completed, 0) = question_totals.total_questions
+        WHEN question_totals.total_questions > 0
+          AND COALESCE(completion.total_completed, 0) = question_totals.total_questions
           THEN completion.completed_at
         ELSE NULL
-      END AS completion_time
+      END AS completed_at
     FROM users u
     CROSS JOIN (
       SELECT COUNT(*) AS total_questions
