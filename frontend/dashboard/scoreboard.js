@@ -2,12 +2,54 @@ var ip = window.location.hostname;
 setInterval(() => {
   location.reload();
 }, 5000); 
-fetch("header.html")
-  .then((response) => response.text())
-  .then((html) => {
-    document.getElementById("header-container").innerHTML = html;
-  })
-  .catch((error) => console.error("Error fetching header:", error));
+
+const formatTime = (totalSeconds) => {
+  const safeSeconds = Math.max(totalSeconds, 0);
+  const hours = Math.floor(safeSeconds / 3600);
+  const minutes = Math.floor((safeSeconds % 3600) / 60);
+  const seconds = safeSeconds % 60;
+
+  return [hours, minutes, seconds].map((value) => String(value).padStart(2, "0")).join(":");
+};
+
+const startTimer = (endTime) => {
+  const timerElement = document.getElementById("competition-timer");
+  if (!timerElement) {
+    return;
+  }
+
+  const updateDisplay = () => {
+    const remainingSeconds = Math.floor((endTime - Date.now()) / 1000);
+    timerElement.textContent = formatTime(remainingSeconds);
+  };
+
+  updateDisplay();
+  setInterval(updateDisplay, 1000);
+};
+
+const initTimer = async () => {
+  try {
+    const token = localStorage.getItem("aT");
+    const response = await fetch(`http://${ip}:8888/dashboard/timer`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? token : "",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch timer: ${response.status}`);
+    }
+
+    const timerData = await response.json();
+    startTimer(timerData.endTime);
+  } catch (error) {
+    console.error("Error fetching timer:", error);
+  }
+};
+
+document.addEventListener("DOMContentLoaded", initTimer);
 
 (async () => {
   const token = localStorage.getItem("aT");

@@ -240,7 +240,7 @@ document
           console.log(reply);
           let message = reply.message + " " + reply.attempts + " attempted";
           alert(message);
-          if(reply.message !== "Wrong Answer"){ // we have to do something like if (reply.refresh) window.location.href = "dashboard.html";
+          if(reply.attempts && reply.attempts >=3){
               window.location.href = "dashboard.html";
           }
       }

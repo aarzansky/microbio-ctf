@@ -2,6 +2,10 @@ require("dotenv").config();
 const connection = require("../utils/dbConnection");
 
 var userScoreValue;
+const TIMER_MINUTES = 1;
+const TIMER_DURATION_MS = TIMER_MINUTES*60*1000;
+const backendStartedAt = Date.now();
+const endTime = backendStartedAt + TIMER_DURATION_MS;
 
 const sendQuestion = (req, res) => {
   const getAllQuestionsQuery = `
@@ -76,10 +80,9 @@ const checkAnswer = (req, res) => {
 
       const attempts = attemptResults.length > 0 ? attemptResults[0].attempts : 0;
 
-      if (attempts > 3) {
+      if (attempts >=3) {
         return res.status(401).json({
             message: "Cannot attempt for more than 3 times",
-            
         });
       }
 
@@ -234,6 +237,10 @@ function incrementAttempt(uid, qid, attempts){
 }
 
 const scoreboard = (req, res) => {
+    if(Date.now() >= endTime){ // change this to when user answers the questions instead
+        console.log("time has ended");
+        process.exit(0);
+    }
   const currentScoreQuery =
     "SELECT user_name, user_score FROM users ORDER BY user_score DESC LIMIT 10";
   connection.query(currentScoreQuery, (err, result) => {
@@ -247,10 +254,23 @@ const scoreboard = (req, res) => {
   });
 };
 
+const competitionTimer = (req, res) => {
+  const endTime = backendStartedAt + TIMER_DURATION_MS;
+  const remainingMs = Math.max(endTime - Date.now(), 0);
+
+  res.status(200).json({
+    backendStartedAt,
+    endTime,
+    remainingSeconds: Math.floor(remainingMs / 1000),
+    expired: remainingMs === 0,
+  });
+};
+
 module.exports = {
   sendQuestion,
   checkAnswer,
   scoreboard,
+  competitionTimer,
   userData,
   // solvedQuestions,
 };

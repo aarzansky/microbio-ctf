@@ -4,6 +4,7 @@ const {
   sendQuestion,
   checkAnswer,
   scoreboard,
+  competitionTimer,
   userData,
 } = require("../controllers/dashboard.controller.js");
 
@@ -11,5 +12,6 @@ router.get("/", sendQuestion);
 router.post("/", userData);
 router.post("/answer", checkAnswer);
 router.get("/scoreboard", scoreboard);
+router.get("/timer", competitionTimer);
 
 module.exports = router;
