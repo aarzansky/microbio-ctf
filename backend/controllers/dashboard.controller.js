@@ -234,8 +234,50 @@ function incrementAttempt(uid, qid, attempts){
 }
 
 const scoreboard = (req, res) => {
-  const currentScoreQuery =
-    "SELECT user_name, user_score FROM users ORDER BY user_score DESC LIMIT 10";
+  const currentScoreQuery = `
+    SELECT
+      u.user_name,
+      u.user_score,
+      CASE
+        WHEN COALESCE(completion.total_completed, 0) = question_totals.total_questions
+          THEN completion.completed_at
+        ELSE NULL
+      END AS completion_time
+    FROM users u
+    CROSS JOIN (
+      SELECT COUNT(*) AS total_questions
+      FROM questions
+    ) question_totals
+    LEFT JOIN (
+      SELECT
+        completed.user_id,
+        COUNT(DISTINCT completed.question_id) AS total_completed,
+        MAX(completed.completed_at) AS completed_at
+      FROM (
+        SELECT
+          sq.user_id,
+          sq.question_id,
+          sq.solved_time AS completed_at
+        FROM solved_questions sq
+        UNION ALL
+        SELECT
+          ua.user_id,
+          ua.question_id,
+          ua.last_attempt_time AS completed_at
+        FROM user_attempts ua
+        WHERE ua.attempts >= 3
+          AND NOT EXISTS (
+            SELECT 1
+            FROM solved_questions sq2
+            WHERE sq2.user_id = ua.user_id
+              AND sq2.question_id = ua.question_id
+          )
+      ) completed
+      GROUP BY completed.user_id
+    ) completion ON completion.user_id = u.user_id
+    ORDER BY u.user_score DESC
+    LIMIT 10
+  `;
   connection.query(currentScoreQuery, (err, result) => {
     if (err) {
       console.log("Error fetching scores:", err);

@@ -20,6 +20,7 @@ create table user_attempts (
     user_id INT NOT NULL,
     question_id INT NOT NULL,
     attempts INT DEFAULT 0,
+    last_attempt_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (user_id, question_id)
 );
 
