@@ -34,9 +34,13 @@ fetch("header.html")
         var rankCell = row.insertCell(0);
         var usernameCell = row.insertCell(1);
         var scoreCell = row.insertCell(2);
+        var completionTimeCell = row.insertCell(3);
         rankCell.textContent = index + 1;
         usernameCell.textContent = item.user_name;
         scoreCell.textContent = item.user_score;
+        completionTimeCell.textContent = item.completion_time
+          ? new Date(item.completion_time).toLocaleString()
+          : "-";
       });
     } else {
       console.error("Failed to fetch leaderboard:", response.statusText);
